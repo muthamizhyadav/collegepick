@@ -36,8 +36,5 @@ jobs:
         run: |
           echo "$PROD_ENV_FILE" > .env
 
-      - name: Build the project
-        run: npm run build
-
       - name: Run tests
         run: npm test
