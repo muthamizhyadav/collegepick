@@ -30,13 +30,14 @@ jobs:
           fi
 
       - name: Create .env file
+        shell: bash
+        env:
+          PROD_ENV_FILE: ${{ secrets.PROD_ENV_FILE }}
         run: |
-          touch .env
-          echo "${{ secrets.PROD_ENV_FILE }}" > .env
+          echo "$PROD_ENV_FILE" > .env
 
       - name: Build the project
         run: npm run build
 
       - name: Run tests
         run: npm test
-
