@@ -19,6 +19,3 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci  # Will work if package-lock.json exists in the repo
-    - run: |
-        touch .env
-        echo "${{secrets.PROD_ENV_FILE}}" > .env
