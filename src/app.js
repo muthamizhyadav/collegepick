@@ -55,7 +55,7 @@ app.use('/v1', routes);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
-  next(new ApiError(httpStatus.OK, 'Server Running.......'));
+  next(new ApiError(httpStatus.OK, 'Currently Server Running...'));
 });
 
 // convert error to ApiError, if needed
