@@ -3,9 +3,14 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const { v4 } = require('uuid');
 
 const userSchema = mongoose.Schema(
   {
+    _id: {
+      type: String,
+      default: v4,
+    },
     name: {
       type: String,
       required: true,
@@ -27,7 +32,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      minlength: 8,
+      minlength: 5,
       validate(value) {
         if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
           throw new Error('Password must contain at least one letter and one number');
