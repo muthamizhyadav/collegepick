@@ -34,10 +34,16 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const fetchadmin = catchAsync(async (req, res) => {
+  const admins = await userService.fetchadmin(req);
+  res.send(admins);
+});
+
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  fetchadmin,
 };

@@ -79,6 +79,11 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const fetchadmin = async (req) => {
+  const admins = await User.find({ role: 'admin' });
+  return admins;
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -86,4 +91,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  fetchadmin,
 };

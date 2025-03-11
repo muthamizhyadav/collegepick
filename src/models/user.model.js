@@ -49,6 +49,17 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    canAccess: {
+      type: Array,
+      default: [],
+    },
+    contact: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

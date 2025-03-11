@@ -1,6 +1,7 @@
 const config = require('../config/config');
 const AWS = require('aws-sdk');
 
+// Configure AWS SDK
 AWS.config.update({
   accessKeyId: config.s3.access,
   secretAccessKey: config.s3.secret,
@@ -9,46 +10,43 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-export const singleUploadToS3 = async (req, details) => {
-  const { folderName } = details;
-  const params = {
-    Bucket: 'collegepickin',
-    Key: `${folderName}/` + req.file.originalname,
-    Body: req.file.buffer,
-    ContentType: req.file.mimetype,
-  };
+exports.singleUploadToS3 = async (file, folderName) => {
   try {
-    const data = await s3.upload(params).promise();
-    res.json({
-      message: 'File uploaded successfully',
-      location: data,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error uploading file');
-  }
-};
-
-export const multipleUploadToS3 = async (req, details) => {
-  const { folderName } = details;
-  const uploadPromises = req.files.map((file) => {
     const params = {
       Bucket: 'collegepickin',
-      Key: `${folderName}/` + file.originalname,
+      Key: `${folderName}/${Date.now()}-${file.originalname}`,
       Body: file.buffer,
       ContentType: file.mimetype,
     };
-    return s3.upload(params).promise();
-  });
-  try {
-    const results = await Promise.all(uploadPromises);
-    const datas = results.map((data) => data);
-    res.json({
-      message: 'Files uploaded successfully',
-      location: datas,
-    });
+    const data = await s3.upload(params).promise();
+    return data
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Error uploading files');
+    console.error('S3 Upload Error:', err);
+    throw new Error('File upload failed');
+  }
+};
+
+exports.multipleUploadToS3 = async (files, folderName) => {
+  try {
+    const uploadPromises = files.map((file) => {
+      const params = {
+        Bucket: 'collegepickin',
+        Key: `${folderName}/${Date.now()}-${file.originalname}`,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+        ACL: 'public-read',
+      };
+      return s3.upload(params).promise();
+    });
+
+    const results = await Promise.all(uploadPromises);
+    return results.map((data) => ({
+      success: true,
+      location: data.Location,
+      key: data.Key,
+    }));
+  } catch (err) {
+    console.error('S3 Multi Upload Error:', err);
+    throw new Error('One or more file uploads failed');
   }
 };
