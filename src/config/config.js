@@ -62,8 +62,8 @@ module.exports = {
     from: envVars.EMAIL_FROM,
   },
   s3: {
-    secret: envVars.AWS_SECRET_KEY,
-    access: envVars.AWS_ACCESS_KEY,
-    region:envVars.AWS_REGION
+    secret: 'bhuv5PB6pdL0iAGZDdOn/p6IDvmtNn6tBFTmBmib',
+    access: 'AKIAQU2FBUROMP7LHZP2',
+    region:'ap-south-1'
   },
 };
