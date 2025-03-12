@@ -61,9 +61,4 @@ module.exports = {
     },
     from: envVars.EMAIL_FROM,
   },
-  s3: {
-    secret:'',
-    access: '',
-    region:''
-  },
 };
