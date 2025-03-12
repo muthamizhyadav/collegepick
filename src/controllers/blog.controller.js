@@ -18,8 +18,14 @@ const updateBlogById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const deleteBlogById = catchAsync(async (req, res) => {
+  const data = await blogService.deleteBlogById(req);
+  res.send(data);
+});
+
 module.exports = {
   createBlog,
   findBlogs,
   updateBlogById,
+  deleteBlogById,
 };

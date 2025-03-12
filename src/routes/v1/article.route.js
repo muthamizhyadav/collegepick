@@ -6,6 +6,5 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.route('/').post(upload.single('file'), articleController.createArticle).get(articleController.findArticles);
-router.route('/:id').put(upload.single('file'),articleController.updateArticleById);
-
+router.route('/:id').put(upload.single('file'),articleController.updateArticleById).delete(articleController.deleteArticleById);
 module.exports = router;

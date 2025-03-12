@@ -39,8 +39,19 @@ const updateBlogById = async (req) => {
   return findBlogById;
 };
 
+const deleteBlogById = async (req) => {
+  const id = req.params.id;
+  let findBlog = await Blog.findById(id);
+  if (!findBlog) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Blog not found');
+  }
+  findBlog.remove();
+  return findBlog;
+};
+
 module.exports = {
   createBlog,
   findBlogs,
   updateBlogById,
+  deleteBlogById,
 };

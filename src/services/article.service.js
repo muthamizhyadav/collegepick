@@ -39,8 +39,19 @@ const updateArticleById = async (req) => {
   return findarticleById;
 };
 
+const deleteArticleById = async (req) => {
+  const id = req.params.id;
+  let findArticle = await Article.findById(id);
+  if (!findArticle) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Article not found');
+  }
+  findArticle.remove();
+  return findArticle;
+};
+
 module.exports = {
   createArticle,
   findArticles,
   updateArticleById,
+  deleteArticleById,
 };

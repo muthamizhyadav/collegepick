@@ -18,8 +18,14 @@ const updateArticleById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const deleteArticleById = catchAsync(async (req, res) => {
+  const data = await ArticleService.deleteArticleById(req);
+  res.send(data);
+});
+
 module.exports = {
   createArticle,
   findArticles,
   updateArticleById,
+  deleteArticleById,
 };
