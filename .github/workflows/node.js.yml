@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ['master']
 
 jobs:
   build:
@@ -24,10 +24,10 @@ jobs:
       SMTP_PASSWORD: email-server-password
       EMAIL_FROM: support@yourapp.com
     steps:
-    - uses: actions/checkout@v4  # This step fetches your code (including package-lock.json)
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci  # Will work if package-lock.json exists in the repo
+      - uses: actions/checkout@v4 # This step fetches your code (including package-lock.json)
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci # Will work if package-lock.json exists in the repo
