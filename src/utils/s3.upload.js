@@ -19,7 +19,7 @@ exports.singleUploadToS3 = async (file, folderName) => {
       ContentType: file.mimetype,
     };
     const data = await s3.upload(params).promise();
-    return data
+    return data;
   } catch (err) {
     console.error('S3 Upload Error:', err);
     throw new Error('File upload failed');
@@ -48,5 +48,37 @@ exports.multipleUploadToS3 = async (files, folderName) => {
   } catch (err) {
     console.error('S3 Multi Upload Error:', err);
     throw new Error('One or more file uploads failed');
+  }
+};
+
+exports.multiFieldUploadToS3 = async (filesObject, folderName) => {
+  try {
+    const uploadResults = {};
+    for (const [fieldName, files] of Object.entries(filesObject)) {
+      const filesArray = Array.isArray(files) ? files : [files];
+      const fieldResults = await Promise.all(
+        filesArray.map(async (file) => {
+          const params = {
+            Bucket: 'collegepickin',
+            Key: `${folderName}/${Date.now()}-${file.originalname}`,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+          };
+          const data = await s3.upload(params).promise();
+          return {
+            success: true,
+            location: data.Location,
+            key: data.Key,
+            field: fieldName,
+            originalname: file.originalname,
+          };
+        })
+      );
+      uploadResults[fieldName] = fieldResults;
+    }
+    return uploadResults;
+  } catch (err) {
+    console.error('S3 Multi-Field Upload Error:', err);
+    throw new Error(`File upload failed: ${err.message}`);
   }
 };
